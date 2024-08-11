@@ -1,0 +1,24 @@
+<html lang="en">
+  <%- include("./partials/head.ejs") %>
+
+  <body>
+    <%- include("./partials/nav.ejs") %>
+
+    <section>
+        <h2>All Blogposts</h2>
+        <% if (blogs.length > 0) { %>
+            <% blogs.forEach(post => { %>
+                <article>
+                    <h3><%= post.title %></h3>
+                    <p><%= post.author %></p>
+                    <p><%= post.summary %></p>
+                </article>
+            <% }) %>
+        <% } else { %>
+            <p>No blogs have been found.</p>
+        <% } %>
+    </section>
+
+    <%- include("./partials/footer.ejs") %>
+  </body>
+</html>
