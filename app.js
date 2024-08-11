@@ -84,7 +84,13 @@ app.post('/blogs', (req, res) => {
 app.delete('/blogs/id/:id', (req, res) => {
     const blogId = parseInt(req.params.id);
     deleteBlog(blogId);
-    res.redirect('/blogs');
+    if(getBlogById(blogId)) {
+        // Case: Blog not deleted
+        res.redirect('/fail');
+    } else {
+        // Case: Blog deleted successfully
+        res.json({ redirect: '/success' });
+    }
 }
 );
 
