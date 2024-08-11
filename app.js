@@ -70,6 +70,7 @@ function addBlog(blog) {
 app.use(bodyParser.json());
 
 // POST request to add a new blog
+app.use(bodyParser.urlencoded({ extended: true }));
 app.post('/blogs', (req, res) => {
     const blog = req.body;
     blog.id = blogs.length + 1;
@@ -109,16 +110,21 @@ app.get('/fail', (req, res) => {
 
 // 1. Let's submit a form
 // Q: What is the default method of the form?
+// -> GET
 // Q: What is the default path of the form?
+// -> /blogs
 // Q: What is the content type of the form? 
+// -> application/x-www-form-urlencoded
 // Q: What is url encoding?
+// -> It is a way to encode the form data before sending it to the server.
 // Do we need to convert this url encoded data to JSON?
+// -> Yes
 // How to do that?
 // -> Use body-parser middleware
 // app.use(bodyParser.urlencoded({ extended: true }));
 // What is the difference between body-parser.urlencoded and body-parser.json?
-
-
+// -> urlencoded is used to parse the data with content type application/x-www-form-urlencoded
+// -> json is used to parse the data with content type application/json
 
 
 
