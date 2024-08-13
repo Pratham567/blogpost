@@ -27,7 +27,9 @@
           method: "DELETE",
         });
         if (response.ok) {
-          window.location.href = "/blogs";
+          responseContent = await response.json();
+          console.log(response);
+          window.location.href = responseContent.redirect;
         } else {
           alert("Failed to delete blog");
         }

@@ -106,7 +106,7 @@ app.delete('/blogs/id/:id', (req, res) => {
     BlogPost.findByIdAndDelete(req.params.id)
         .then((result) => {
             console.log(`Blog deleted: ${result.title}`);
-            res.json({ redirect: '/success' });
+            res.json({ redirect: '/blogs' });
         })
         .catch((err) => {
             console.log(err);
