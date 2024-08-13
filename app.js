@@ -1,9 +1,29 @@
 const express = require('express');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
+const BlogPost = require('./models/blogpost');
+const mongoose = require('mongoose');
+
+// CONSTANTS
+const USER_NAME = 'mituser';
+const PASSWORD = 'mitpassword';
+const DB_NAME = 'merndb';
+const DB_URI = `mongodb+srv://${USER_NAME}:${PASSWORD}@merncluster.xtjdu.mongodb.net/${DB_NAME}?retryWrites=true&w=majority&appName=mernMongoose`;
+const PORT = 3040;
 
 // express app
 const app = express();
+
+
+mongoose.connect(DB_URI)
+    .then((result) => {
+        console.log('Connected to database');
+        app.listen(PORT, () => {
+            console.log(`Server is running on port ${PORT}`);
+        });
+    })
+    .catch((err) => console.log(err));
+
 
 const blogs = [
     { id: 1, title: 'Blog Title 1', summary: 'Summary of blog 1', content: 'Content of blog 1', author: 'Author 1', time: 'Time 1' },
@@ -11,10 +31,6 @@ const blogs = [
     { id: 3, title: 'Blog Title 3', summary: 'Summary of blog 3', content: 'Content of blog 3', author: 'Author 3', time: 'Time 3' }
 ];
 
-const port = 3040;
-app.listen(port, () => {
-    console.log(`Server is running on port ${port}`);
-});
 
 // register view engine
 app.set('view engine', 'ejs');
@@ -38,33 +54,32 @@ app.get('/about', (req, res) => {
 
 // blog routes
 app.get('/blogs', (req, res) => {
-    res.render('blogs', { title: 'All blogs', blogs });
+    BlogPost.find().sort({ createdAt: -1 })
+        .then((result) => {
+            res.render('blogs', { title: 'All blogs', blogs: result });
+        })
+        .catch((err) => {
+            console.log(err);
+            res.redirect('/fail');
+        });
 });
 
 app.get('/newblog', (req, res) => {
     res.render('newblog', { title: 'New blog' });
 });
 
-// write a function to get the blog by id
-function getBlogById(id) {
-    return blogs.find(blog => blog.id === id);
-}
-
 // New route to view a single blog post
 app.get('/blogs/id/:id', (req, res) => {
-    const blogId = parseInt(req.params.id, 10);
-    const blog = getBlogById(blogId);
-    if (blog) {
-        res.render('single-blog', { title: blog.title, blog });
-    } else {
-        res.status(404).render('error', { title: 'Blog Not Found' });
-    }
-});
+    BlogPost.findById(req.params.id)
+        .then((blog) => {
+            res.render('single-blog', { title: blog.title, blog });
+        })
+        .catch((err) => {
+            console.log(err);
+            res.status(404).render('error', { title: 'Blog Not Found' });
+        });
 
-// write a function to add a new blog
-function addBlog(blog) {
-    blogs.push(blog);
-}
+});
 
 // Middleware to parse form data
 app.use(bodyParser.json());
@@ -73,34 +88,32 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.post('/blogs', (req, res) => {
     const blog = req.body;
-    blog.id = blogs.length + 1;
-    blog.time = new Date().toLocaleString();
+    const blogpost = new BlogPost(blog);
+    blogpost.save()
+        .then((result) => {
+            console.log(`New blog added: ${result.title}`);
+            res.redirect('/success');
+        })
+        .catch((err) => {
+            console.log(err);
+            res.redirect('/fail');
+        });
     console.log(`New blog added: ${blog.title}`);
-    addBlog(blog);
-    res.redirect('/success');
 });
 
 // DELETE request to delete a blog
 app.delete('/blogs/id/:id', (req, res) => {
-    const blogId = parseInt(req.params.id);
-    deleteBlog(blogId);
-    if(getBlogById(blogId)) {
-        // Case: Blog not deleted
-        res.redirect('/fail');
-    } else {
-        // Case: Blog deleted successfully
-        res.json({ redirect: '/success' });
-    }
+    BlogPost.findByIdAndDelete(req.params.id)
+        .then((result) => {
+            console.log(`Blog deleted: ${result.title}`);
+            res.json({ redirect: '/success' });
+        })
+        .catch((err) => {
+            console.log(err);
+            res.redirect('/fail');
+        });
 }
 );
-
-// write a function to delete a blog by id
-function deleteBlog(id) {
-    const index = blogs.findIndex(blog => blog.id === id);
-    if (index !== -1) {
-        blogs.splice(index, 1);
-    }
-}
 
 app.get('/success', (req, res) => {
     res.render('success', { title: 'Success' });
@@ -110,8 +123,6 @@ app.get('/success', (req, res) => {
 app.get('/fail', (req, res) => {
     res.render('fail', { title: 'Failed' });
 });
-
-
 
 
 // 1. Let's submit a form
@@ -131,7 +142,6 @@ app.get('/fail', (req, res) => {
 // What is the difference between body-parser.urlencoded and body-parser.json?
 // -> urlencoded is used to parse the data with content type application/x-www-form-urlencoded
 // -> json is used to parse the data with content type application/json
-
 
 
 // 404 page
