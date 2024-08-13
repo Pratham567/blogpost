@@ -25,13 +25,6 @@ mongoose.connect(DB_URI)
     .catch((err) => console.log(err));
 
 
-const blogs = [
-    { id: 1, title: 'Blog Title 1', summary: 'Summary of blog 1', content: 'Content of blog 1', author: 'Author 1', time: 'Time 1' },
-    { id: 2, title: 'Blog Title 2', summary: 'Summary of blog 2', content: 'Content of blog 2', author: 'Author 2', time: 'Time 2' },
-    { id: 3, title: 'Blog Title 3', summary: 'Summary of blog 3', content: 'Content of blog 3', author: 'Author 3', time: 'Time 3' }
-];
-
-
 // register view engine
 app.set('view engine', 'ejs');
 
@@ -78,7 +71,6 @@ app.get('/blogs/id/:id', (req, res) => {
             console.log(err);
             res.status(404).render('error', { title: 'Blog Not Found' });
         });
-
 });
 
 // Middleware to parse form data
