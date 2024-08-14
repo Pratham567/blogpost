@@ -20,7 +20,10 @@ mongoose.connect(DB_URI)
             console.log(`Server is running on port ${PORT}`);
         });
     })
-    .catch((err) => console.log(err));
+    .catch((err) => {
+        console.error('Failed to connect to database', err);
+        process.exit(1); // Exit the process with a failure code
+    });
 
 
 // register view engine
@@ -55,6 +58,11 @@ app.get('/fail', (req, res) => {
     res.render('fail', { title: 'Failed' });
 });
 
+// 404 page
+app.use((req, res) => {
+    res.status(404).render('error', { title: 'Error' });
+});
+
 
 // 1. Let's submit a form
 // Q: What is the default method of the form?
@@ -79,3 +87,4 @@ app.get('/fail', (req, res) => {
 app.use((req, res) => {
     res.status(404).render('error', { title: 'Error' });
 });
+

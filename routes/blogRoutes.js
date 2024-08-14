@@ -4,11 +4,6 @@ const BlogPost = require('../models/blogpost');
 
 const router = express.Router();
 
-
-router.get('/form', (req, res) => {
-    res.render('newblog', { title: 'New blog' });
-});
-
 // blog routes
 router.get('/', (req, res) => {
     BlogPost.find().sort({ createdAt: -1 })
@@ -68,6 +63,10 @@ router.delete('/id/:id', (req, res) => {
             console.log(err);
             res.redirect('/fail');
         });
+});
+
+router.get('/form', (req, res) => {
+    res.render('newblog', { title: 'New blog' });
 });
 
 
