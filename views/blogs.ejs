@@ -19,10 +19,47 @@
           <p class="blog-summary"><%= post.summary %></p>
         </a>
       </article>
+
       <% }) %> <% } else { %>
       <p>No blogs have been found.</p>
       <% } %>
     </section>
+
+    <div class="pagination-container">
+      <div class="pagination">
+        <% if (currentPage > 1) { %>
+        <a href="/blogs?page=<%= currentPage - 1 %>&limit=<%= limit %>">Previous</a>
+        <% } %>
+    
+        <% 
+        const range = 2; // Number of pages to show around the current page
+        const startPage = Math.max(1, currentPage - range);
+        const endPage = Math.min(totalPages, currentPage + range);
+        %>
+    
+        <% if (startPage > 1) { %>
+        <a href="/blogs?page=1&limit=<%= limit %>">1</a>
+        <% if (startPage > 2) { %>
+        <span>...</span>
+        <% } %>
+        <% } %>
+    
+        <% for (let i = startPage; i <= endPage; i++) { %>
+        <a href="/blogs?page=<%= i %>&limit=<%= limit %>" class="<%= i === currentPage ? 'active' : '' %>"><%= i %></a>
+        <% } %>
+    
+        <% if (endPage < totalPages) { %>
+        <% if (endPage < totalPages - 1) { %>
+        <span>...</span>
+        <% } %>
+        <a href="/blogs?page=<%= totalPages %>&limit=<%= limit %>"><%= totalPages %></a>
+        <% } %>
+    
+        <% if (currentPage < totalPages) { %>
+        <a href="/blogs?page=<%= currentPage + 1 %>&limit=<%= limit %>">Next</a>
+        <% } %>
+      </div>
+    </div>
 
     <%- include("./partials/footer.ejs") %>
     <script>

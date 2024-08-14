@@ -5,15 +5,40 @@ const BlogPost = require('../models/blogpost');
 const router = express.Router();
 
 // blog routes
-router.get('/', (req, res) => {
-    BlogPost.find().sort({ createdAt: -1 })
-        .then((result) => {
-            res.render('blogs', { title: 'All blogs', blogs: result });
-        })
-        .catch((err) => {
-            console.log(err);
-            res.redirect('/fail');
+// router.get('/', (req, res) => {
+//     BlogPost.find().sort({ createdAt: -1 })
+//         .then((result) => {
+//             res.render('blogs', { title: 'All blogs', blogs: result });
+//         })
+//         .catch((err) => {
+//             console.log(err);
+//             res.redirect('/fail');
+//         });
+// });
+
+// Route to get paginated blog posts
+router.get('/', async (req, res) => {
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+
+    try {
+        const count = await BlogPost.countDocuments();
+        const blogs = await BlogPost.find()
+            .sort({ createdAt: -1 }) // Sort by createdAt in descending order
+            .skip((page - 1) * limit)
+            .limit(limit);
+
+        res.render('blogs', {
+            title: 'All Blogs',
+            blogs,
+            currentPage: page,
+            totalPages: Math.ceil(count / limit),
+            limit
         });
+    } catch (err) {
+        console.log(err);
+        res.status(500).render('error', { title: 'Error Fetching Blogs' });
+    }
 });
 
 

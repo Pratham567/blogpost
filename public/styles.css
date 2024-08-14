@@ -122,7 +122,6 @@ article p {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  /* margin: 0 20px; */
 }
 #refresh-button {
   background: none;
@@ -260,6 +259,7 @@ article p {
 }
 
 .blog-list {
+  max-width: 80%;
   padding: 20px;
 }
 
@@ -271,6 +271,10 @@ article p {
   transition: box-shadow 0.3s ease;
 }
 
+.blog-post:last-child {
+  border-bottom: none;
+}
+
 .blog-post:hover {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
@@ -280,9 +284,53 @@ article p {
   color: inherit;
 }
 
+/* Pagination Container */
+.pagination-container {
+  max-width: 100%;
+  overflow-x: auto;
+  padding: 10px 0;
+  margin-bottom: 2vh;
+}
+
+/* Pagination Styles */
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+  flex-wrap: wrap; /* Ensure pagination items wrap if necessary */
+}
+
+.pagination a {
+  color: #007bff; /* Primary color */
+  padding: 10px 15px;
+  margin: 0 5px;
+  text-decoration: none;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.pagination a:hover {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.pagination a.active {
+  background-color: #007bff;
+  color: #fff;
+  border-color: #007bff;
+}
+
+.pagination a.disabled {
+  color: #ccc;
+  pointer-events: none;
+  border-color: #ddd;
+}
+
 .blog-title {
   font-size: 1.5em;
   margin-bottom: 10px;
+  margin: 0;
 }
 
 .blog-author {
@@ -294,6 +342,11 @@ article p {
 .blog-summary {
   font-size: 1em;
   color: #333;
+}
+
+.blog-author,
+.blog-summary {
+  margin: 5px 0;
 }
 
 .blog-content {
