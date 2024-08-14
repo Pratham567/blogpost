@@ -1,8 +1,7 @@
 const express = require('express');
 const morgan = require('morgan');
-const bodyParser = require('body-parser');
-const BlogPost = require('./models/blogpost');
 const mongoose = require('mongoose');
+const blogpostRoutes = require('./routes/blogRoutes');
 
 // CONSTANTS
 const USER_NAME = 'mituser';
@@ -13,7 +12,6 @@ const PORT = 3040;
 
 // express app
 const app = express();
-
 
 mongoose.connect(DB_URI)
     .then((result) => {
@@ -41,71 +39,12 @@ app.get('/', (req, res) => {
     res.render('index', { title: 'Home' });
 });
 
+// blog routes
+app.use('/blogs', blogpostRoutes);
+
 app.get('/about', (req, res) => {
     res.render('about', { title: 'About' });
 });
-
-// blog routes
-app.get('/blogs', (req, res) => {
-    BlogPost.find().sort({ createdAt: -1 })
-        .then((result) => {
-            res.render('blogs', { title: 'All blogs', blogs: result });
-        })
-        .catch((err) => {
-            console.log(err);
-            res.redirect('/fail');
-        });
-});
-
-app.get('/newblog', (req, res) => {
-    res.render('newblog', { title: 'New blog' });
-});
-
-// New route to view a single blog post
-app.get('/blogs/id/:id', (req, res) => {
-    BlogPost.findById(req.params.id)
-        .then((blog) => {
-            res.render('single-blog', { title: blog.title, blog });
-        })
-        .catch((err) => {
-            console.log(err);
-            res.status(404).render('error', { title: 'Blog Not Found' });
-        });
-});
-
-// Middleware to parse form data
-app.use(bodyParser.json());
-
-// POST request to add a new blog
-app.use(bodyParser.urlencoded({ extended: true }));
-app.post('/blogs', (req, res) => {
-    const blog = req.body;
-    const blogpost = new BlogPost(blog);
-    blogpost.save()
-        .then((result) => {
-            console.log(`New blog added: ${result.title}`);
-            res.redirect('/success');
-        })
-        .catch((err) => {
-            console.log(err);
-            res.redirect('/fail');
-        });
-    console.log(`New blog added: ${blog.title}`);
-});
-
-// DELETE request to delete a blog
-app.delete('/blogs/id/:id', (req, res) => {
-    BlogPost.findByIdAndDelete(req.params.id)
-        .then((result) => {
-            console.log(`Blog deleted: ${result.title}`);
-            res.json({ redirect: '/blogs' });
-        })
-        .catch((err) => {
-            console.log(err);
-            res.redirect('/fail');
-        });
-}
-);
 
 app.get('/success', (req, res) => {
     res.render('success', { title: 'Success' });
