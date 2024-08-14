@@ -5,7 +5,7 @@ const BlogPost = require('../models/blogpost');
 const router = express.Router();
 
 
-router.get('/new', (req, res) => {
+router.get('/form', (req, res) => {
     res.render('newblog', { title: 'New blog' });
 });
 
@@ -41,7 +41,7 @@ router.use(bodyParser.json());
 
 // POST request to add a new blog
 router.use(bodyParser.urlencoded({ extended: true }));
-router.post('', (req, res) => {
+router.post('/', (req, res) => {
     const blog = req.body;
     const blogpost = new BlogPost(blog);
     blogpost.save()
