@@ -49,15 +49,6 @@ app.get('/about', (req, res) => {
     res.render('about', { title: 'About' });
 });
 
-app.get('/success', (req, res) => {
-    res.render('success', { title: 'Success' });
-}
-);
-
-app.get('/fail', (req, res) => {
-    res.render('fail', { title: 'Failed' });
-});
-
 // 404 page
 app.use((req, res) => {
     res.status(404).render('error', { title: 'Error' });
