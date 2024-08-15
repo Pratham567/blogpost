@@ -1,10 +1,15 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const BlogPost = require('../models/blogpost');
 const blogController = require('../controllers/blogController');
+// const cookieParser = require('cookie-parser');
+// const jwt = require('jsonwebtoken');
 
 const router = express.Router();
 
+// 1. Read the cookie
+// 2. Verify the token
+// 2a. If token is valid, call next()
+// 2b. If token is invalid, redirect to login page
 
 router.get('/form', (req, res) => {
     res.render('blogs/newblog', { title: 'New blog' });
@@ -35,3 +40,63 @@ router.post('/',blogController.blog_create_post);
 router.delete('/id/:id', blogController.blog_delete);
 
 module.exports = router;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// // 1. Read the cookie
+// // 2. Verify the token
+// // 2a. If token is valid, call next()
+// // 2b. If token is invalid, redirect to login page
+// router.use(cookieParser());
+// function authRequired(req, res, next) {
+//     const token = req.cookies.jwt;
+//     const secret = 'veryComplexSecret';
+//     // Check if token exists
+//     if (token) {
+//         jwt.verify(token, secret, (err, decodedToken) => {
+//             if (err) {
+//                 console.log(err.message);
+//                 res.redirect('/auth/login');
+//             } else {
+//                 console.log(decodedToken);
+//                 next();
+//             }
+//         });
+//     } else {
+//         res.redirect('/auth/login');
+//     }
+// }
+
+// router.use(authRequired);
