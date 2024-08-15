@@ -12,8 +12,7 @@ router.get('/form', (req, res) => {
 
 router.get('/success', (req, res) => {
     res.render('blogs/success', { title: 'Success' });
-}
-);
+});
 
 router.get('/fail', (req, res) => {
     res.render('blogs/fail', { title: 'Failed' });
@@ -21,8 +20,6 @@ router.get('/fail', (req, res) => {
 
 // // blog routes
 // Middleware to parse form data
-router.use(bodyParser.json());
-// POST request to add a new blog
 router.use(bodyParser.urlencoded({ extended: true }));
 
 // GET request to view all blogs
