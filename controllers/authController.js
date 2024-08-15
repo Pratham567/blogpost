@@ -12,6 +12,8 @@ function signup_get(req, res) {
 }
 
 function signup_post(req, res) {
+    const { name, email, password } = req.body;
+    console.log("name: ", name, "email: ", email, "password: ", password);
     console.log(req.body);
     res.redirect('/');
 }
