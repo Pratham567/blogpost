@@ -2,7 +2,7 @@ const express = require('express');
 const morgan = require('morgan');
 const mongoose = require('mongoose');
 const blogpostRoutes = require('./routes/blogRoutes');
-// const authRoutes = require('./routes/auth/authRoutes');
+const authRoutes = require('./routes/auth/authRoutes');
 
 // CONSTANTS
 const USER_NAME = 'mituser';
@@ -44,7 +44,7 @@ app.get('/', (req, res) => {
 });
 
 // auth routes
-// app.use('/auth', authRoutes);
+app.use('/auth', authRoutes);
 
 // blog routes
 app.use('/blogs', blogpostRoutes);

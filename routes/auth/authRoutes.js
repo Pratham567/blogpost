@@ -15,16 +15,28 @@ router.get('/signup', (req, res) => {
 
 
 // Middleware to parse form data
-// ??
+router.use(bodyParser.urlencoded());
+// HW: read about extended: true
 
 // Signup route POST
 router.post('/signup', (req, res) => {
     // 1. Extract the name, email and password from the request body
+    const obj = req.body;
+    console.log(obj);
+    User.create(obj)
+        .then(user => {
+            console.log('User created successfully');
+            res.redirect('/blogs');
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(400).send(`Error creating user: ${err}`);
+        });
     // 2. Create a new user in the database
     // 2a. If user is created successfully, create a token,
     // // send it back as cookie, and redirect to all blogs page /blogs
     // 2b. If user creation fails, send an error message with status code 400 (Bad Request)
-    res.send('Signup route POST');
+    // res.send('Signup route POST');
 });
 
 // Login route POST
