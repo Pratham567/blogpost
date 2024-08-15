@@ -29,6 +29,7 @@ router.post('/signup', (req, res) => {
             // 2a. If user is created successfully, create a token,
             // // send it back as cookie, and redirect to all blogs page /blogs
             console.log('User created successfully');
+            // TODO: Create a token and send it back as a cookie
             res.redirect('/blogs');
         })
         .catch(err => {
@@ -59,6 +60,7 @@ router.post('/login', (req, res) => {
             else {
                 // If user is found and password is correct, create a token,
                 // // send it back as cookie, and redirect to all blogs page /blogs
+                // TODO: Create a token and send it back as a cookie
                 console.log('User logged in successfully');
                 res.redirect('/blogs');
             }
