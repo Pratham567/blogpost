@@ -47,7 +47,6 @@ router.get('/id/:id', (req, res) => {
 // Middleware to parse form data
 router.use(bodyParser.json());
 
-
 // POST request to add a new blog
 router.use(bodyParser.urlencoded({ extended: true }));
 router.post('/', (req, res) => {
