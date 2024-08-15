@@ -2,6 +2,7 @@ const express = require('express');
 const morgan = require('morgan');
 const mongoose = require('mongoose');
 const blogpostRoutes = require('./routes/blogRoutes');
+// const authRoutes = require('./routes/auth/authRoutes');
 
 // CONSTANTS
 const USER_NAME = 'mituser';
@@ -12,6 +13,10 @@ const PORT = 3040;
 
 // express app
 const app = express();
+// middleware & static files
+app.use(express.static('public'));
+app.use(morgan('dev'));
+app.use(express.json());
 
 mongoose.connect(DB_URI)
     .then((result) => {
@@ -29,10 +34,6 @@ mongoose.connect(DB_URI)
 // register view engine
 app.set('view engine', 'ejs');
 
-// middleware & static files
-app.use(express.static('public'));
-app.use(morgan('dev'));
-
 app.use((req, res, next) => {
     res.locals.path = req.path;
     next();
@@ -41,6 +42,9 @@ app.use((req, res, next) => {
 app.get('/', (req, res) => {
     res.render('index', { title: 'Home' });
 });
+
+// auth routes
+// app.use('/auth', authRoutes);
 
 // blog routes
 app.use('/blogs', blogpostRoutes);
@@ -72,10 +76,3 @@ app.use((req, res) => {
 // What is the difference between body-parser.urlencoded and body-parser.json?
 // -> urlencoded is used to parse the data with content type application/x-www-form-urlencoded
 // -> json is used to parse the data with content type application/json
-
-
-// 404 page
-app.use((req, res) => {
-    res.status(404).render('error', { title: 'Error' });
-});
-
