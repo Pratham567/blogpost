@@ -1,6 +1,9 @@
 // npm install faker
 
 
+// const faker = require('faker');
+// const Blogpost = require('./models/blogpost');
+
 // Helper function to capitalize the first letter of each word in a string
 function capitalizeFirstLetterOfEachWord(string) {
     return string.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');

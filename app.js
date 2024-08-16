@@ -3,11 +3,13 @@ const morgan = require('morgan');
 const mongoose = require('mongoose');
 const blogpostRoutes = require('./routes/blogRoutes');
 const authRoutes = require('./routes/auth/authRoutes');
+const jwt = require('jsonwebtoken');
+const cookieParser = require('cookie-parser');
 
 // CONSTANTS
 const USER_NAME = 'mituser';
 const PASSWORD = 'mitpassword';
-const DB_NAME = 'merndb';
+const DB_NAME = 'merndb'; // TODO: Change this to your database name
 const DB_URI = `mongodb+srv://${USER_NAME}:${PASSWORD}@merncluster.xtjdu.mongodb.net/${DB_NAME}?retryWrites=true&w=majority&appName=mernMongoose`;
 const PORT = 3040;
 
@@ -38,6 +40,13 @@ app.use((req, res, next) => {
     res.locals.path = req.path;
     next();
 });
+
+// TODO: middleware -> checkUser
+// 1. create a function to check if the user is logged in or not
+// 2. if the user is logged in, set res.locals.user to the user object
+// 3. if the user is not logged in, set res.locals.user to null
+
+
 
 app.get('/', (req, res) => {
     res.render('index', { title: 'Home' });
@@ -76,3 +85,41 @@ app.use((req, res) => {
 // What is the difference between body-parser.urlencoded and body-parser.json?
 // -> urlencoded is used to parse the data with content type application/x-www-form-urlencoded
 // -> json is used to parse the data with content type application/json
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// app.use(cookieParser());
+// function checkUser(req, res, next) {
+//     console.log('Checking user');
+//     const token = req.cookies.authtoken;
+//     if(token) {
+//         jwt.verify(token, 'veryComplexSecret', (err, decodedToken) => {
+//             if(err) {
+//                 console.log(err.message);
+//                 res.locals.user = null;
+//             } else {
+//                 console.log(decodedToken);
+//                 res.locals.user = decodedToken;
+//             }
+//         });
+//     }
+//     else {
+//         res.locals.user = null;
+//     }
+//     next();
+// }
+// app.use(checkUser, (req, res, next) => { next(); });

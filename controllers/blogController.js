@@ -2,8 +2,6 @@
 // blog_index_get, blog_id_get, blog_create_post, blog_delete
 // 2. Export these functions
 // 3. Import these functions in the routes file
-
-
 const BlogPost = require('../models/blogpost');
 
 
@@ -35,42 +33,47 @@ const blog_id_get = (req, res) => {
 // blog_create_post
 const blog_create_post = (req, res) => {
     const blog = req.body;
-    const blogpost = new BlogPost(blog);
-    blogpost.save()
+    // Create a new blog post using the BlogPost static method
+    BlogPost.create(blog)
         .then((result) => {
             console.log(`New blog added: ${result.title}`);
-            res.redirect('blogs/success');
+            res.redirect('/blogs/success');
         })
         .catch((err) => {
             console.log(err);
             res.redirect('/blogs/fail');
         });
 
-    
-    // Create a new blog post using the BlogPost static method
-    // BlogPost.create(blog)
+
+
+
+
+    // Another approach to create a new blog post
+    // const blogpost = new BlogPost(blog);
+    // blogpost.save()
     //     .then((result) => {
-    //             console.log(`New blog added: ${result.title}`);
-    //             res.redirect('/blogs/success');
-    //         })
-    //         .catch((err) => {
-    //             console.log(err);
-    //             res.redirect('/blogs/fail');
-    //         });
+    //         console.log(`New blog added: ${result.title}`);
+    //         res.redirect('blogs/success');
+    //     })
+    //     .catch((err) => {
+    //         console.log(err);
+    //         res.redirect('/blogs/fail');
+    //     });
     console.log(`New blog added: ${blog.title}`);
 }
 
 
 // blog_delete
 const blog_delete = (req, res) => {
+    console.log(`Deleting blog with id: ${req.params.id}`);
     BlogPost.findByIdAndDelete(req.params.id)
         .then((result) => {
             console.log(`Blog deleted: ${result.title}`);
-            res.json({ redirect: 'blogs/blogs' });
+            res.json({ redirect: '/blogs' });
         })
         .catch((err) => {
             console.log(err);
-            res.redirect('blogs/fail');
+            res.redirect('/blogs/fail');
         });
 }
 
