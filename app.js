@@ -36,16 +36,33 @@ mongoose.connect(DB_URI)
 // register view engine
 app.set('view engine', 'ejs');
 
-app.use((req, res, next) => {
-    res.locals.path = req.path;
-    next();
-});
+// app.use((req, res, next) => {
+//     res.locals.path = req.path;
+//     next();
+// });
 
-// TODO: middleware -> checkUser
+// middleware -> checkUser
+app.use(cookieParser());
 // 1. create a function to check if the user is logged in or not
-// 2. if the user is logged in, set res.locals.user to the user object
-// 3. if the user is not logged in, set res.locals.user to null
-
+function checkUser(req, res, next) {
+    const token = req.cookies.authtoken;
+    console.log(token);
+    if (token) {
+        jwt.verify(token, 'veryComplexSecret', (err, decodedToken) => {
+            if (err) {
+                console.log(`Token is incorrect: ${err}`);
+                res.locals.user = null;
+            } else {
+                // Token is correct
+                res.locals.user = decodedToken; // {email: "email"}
+            }
+        });
+    } else {
+        res.locals.user = null;
+    }
+    next();
+}
+app.use(checkUser);
 
 
 app.get('/', (req, res) => {
@@ -87,39 +104,3 @@ app.use((req, res) => {
 // -> json is used to parse the data with content type application/json
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// app.use(cookieParser());
-// function checkUser(req, res, next) {
-//     console.log('Checking user');
-//     const token = req.cookies.authtoken;
-//     if(token) {
-//         jwt.verify(token, 'veryComplexSecret', (err, decodedToken) => {
-//             if(err) {
-//                 console.log(err.message);
-//                 res.locals.user = null;
-//             } else {
-//                 console.log(decodedToken);
-//                 res.locals.user = decodedToken;
-//             }
-//         });
-//     }
-//     else {
-//         res.locals.user = null;
-//     }
-//     next();
-// }
-// app.use(checkUser, (req, res, next) => { next(); });

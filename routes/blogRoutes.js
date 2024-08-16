@@ -4,10 +4,19 @@ const blogController = require('../controllers/blogController');
 
 const router = express.Router();
 
-// TODO: middleware -> authRequired
+// TODO: middleware -> isUserLoggedIn
 // 1. Check if the user is logged in or not?
 // 2a. If yes, call next()
 // 2b. else, redirect to login page
+function isUserLoggedIn(req, res, next) {
+    if (res.locals.user) {
+        next();
+    } else {
+        res.redirect('/auth/login');
+    }
+}
+
+router.use(isUserLoggedIn);
 
 router.get('/form', (req, res) => {
     res.render('blogs/newblog', { title: 'New blog' });

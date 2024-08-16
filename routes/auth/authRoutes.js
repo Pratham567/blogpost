@@ -32,7 +32,9 @@ router.post('/signup', (req, res) => {
             // 2a. If user is created successfully, create a token,
             // // send it back as cookie, and redirect to all blogs page /blogs
             console.log('User created successfully');
-            // TODO: Create a token and send it back as a cookie
+            // Create a token and send it back as a cookie
+            const token = getToken(user.email);
+            res.cookie('authtoken', token);
             res.redirect('/blogs');
         })
         .catch(err => {
@@ -41,6 +43,12 @@ router.post('/signup', (req, res) => {
             res.status(400).send(`Error creating user: ${err}`);
         });
 });
+
+function getToken(email) {
+    const secret = "veryComplexSecret";
+    const token = jwt.sign({ email }, secret);
+    return token;
+}
 
 // Login route POST
 router.post('/login', (req, res) => {
@@ -64,7 +72,9 @@ router.post('/login', (req, res) => {
                 // If user is found and password is correct, create a token,
                 // // send it back as cookie, and redirect to all blogs page /blogs
                 console.log('User logged in successfully');
-                // TODO: Create a token and send it back as a cookie
+                // Create a token and send it back as a cookie
+                const token = getToken(user.email);
+                res.cookie('authtoken', token);
                 res.redirect('/blogs');
             }
         })
@@ -78,35 +88,3 @@ router.post('/login', (req, res) => {
 
 
 module.exports = router;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// // Create a token
-// function create_token(email) {
-//     const secret = 'veryComplexSecret';
-//     return jwt.sign({ email }, secret);
-//     // HW: options object
-// }
