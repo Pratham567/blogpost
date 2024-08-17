@@ -467,43 +467,69 @@ footer {
 
 /* CSS for login signup */
 .form-container {
-  max-width: 400px;
-  margin: 50px auto;
-  padding: 20px;
   background-color: #fff;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  padding: 20px;
   border-radius: 8px;
-  text-align: center;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: 300px;
+  margin: 0 auto;
+  margin-top: 50px;
 }
 
-/* CSS for login signup */
+/* Form container styling */
+.form-container {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: 300px;
+  margin: 0 auto;
+  margin-top: 50px;
+}
+
+/* Form group styling */
 .form-group {
   margin-bottom: 15px;
 }
 
-.form-group label {
+/* Label styling */
+label {
   display: block;
   margin-bottom: 5px;
+  color: #333;
 }
 
-.form-group input {
+/* Input styling */
+input {
   width: 90%;
   padding: 10px;
   border: 1px solid #ccc;
-  border-radius: 4px;
+  border-radius: 5px;
 }
 
+/* Button styling */
 button {
   width: 100%;
   padding: 10px;
   background-color: #007bff;
   color: #fff;
   border: none;
-  border-radius: 4px;
+  border-radius: 5px;
   cursor: pointer;
 }
 
 button:hover {
   background-color: #0056b3;
+}
+
+/* Error message styling */
+.error {
+  color: #ff0000;
+  background-color: #ffe6e6;
+  padding: 10px;
+  border: 1px solid #ff0000;
+  border-radius: 5px;
+  margin-bottom: 15px;
+  text-align: center;
 }
 

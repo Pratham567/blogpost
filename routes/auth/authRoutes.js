@@ -7,11 +7,13 @@ const cookieParser = require('cookie-parser');
 const router = Router();
 
 router.get('/login', (req, res) => {
-    res.render('auth/login', { title: 'Login' })
+    const error = req.query.error;
+    res.render('auth/login', { title: 'Login', error });
 });
 
 router.get('/signup', (req, res) => {
-    res.render('auth/signup', { title: 'Sign Up' })
+    const error = req.query.error;
+    res.render('auth/signup', { title: 'Sign Up', error });
 });
 
 
@@ -40,7 +42,7 @@ router.post('/signup', (req, res) => {
         .catch(err => {
             // 2b. If user creation fails, send an error message with status code 400 (Bad Request)
             console.log(err);
-            res.status(400).send(`Error creating user: ${err}`);
+            res.redirect('/auth/signup?error=Error creating user');
         });
 });
 
@@ -61,12 +63,12 @@ router.post('/login', (req, res) => {
             if (!user) {
                 // If user is not found,
                 // send an error message with status code 400 (Bad Request)
-                return res.status(400).send('User not found');
+                return res.redirect('/auth//login?error=User not found');
             }
             else if (user.password !== password) {
                 // If password is incorrect,
                 // send an error message with status code 400 (Bad Request)
-                return res.status(400).send('Incorrect password');
+                return res.redirect('/auth/login?error=Incorrect password');
             }
             else {
                 // If user is found and password is correct, create a token,
@@ -80,7 +82,7 @@ router.post('/login', (req, res) => {
         })
         .catch(err => {
             console.log(err);
-            res.status(400).send('Error logging in');
+            res.redirect('/auth/login?error=Error logging in');
         });
 });
 
