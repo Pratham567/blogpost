@@ -33,7 +33,7 @@ router.post('/signup', (req, res) => {
             // // send it back as cookie, and redirect to all blogs page /blogs
             console.log('User created successfully');
             // Create a token and send it back as a cookie
-            const token = getToken(user.email);
+            const token = getToken(user.email, user.name);
             res.cookie('authtoken', token);
             res.redirect('/blogs');
         })
@@ -44,9 +44,9 @@ router.post('/signup', (req, res) => {
         });
 });
 
-function getToken(email) {
+function getToken(email, name) {
     const secret = "veryComplexSecret";
-    const token = jwt.sign({ email }, secret);
+    const token = jwt.sign({ email, name }, secret);
     return token;
 }
 
@@ -73,7 +73,7 @@ router.post('/login', (req, res) => {
                 // // send it back as cookie, and redirect to all blogs page /blogs
                 console.log('User logged in successfully');
                 // Create a token and send it back as a cookie
-                const token = getToken(user.email);
+                const token = getToken(user.email, user.name);
                 res.cookie('authtoken', token);
                 res.redirect('/blogs');
             }
@@ -84,7 +84,11 @@ router.post('/login', (req, res) => {
         });
 });
 
-// HW: Create a logout route and delete the cookie
+// Logout route GET
+router.get('/logout', (req, res) => {
+    res.clearCookie('authtoken');
+    res.redirect('/');
+});
 
 
 module.exports = router;
