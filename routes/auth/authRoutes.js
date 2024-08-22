@@ -18,7 +18,7 @@ router.get('/signup', (req, res) => {
 
 
 // Middleware to parse form data
-router.use(bodyParser.urlencoded());
+router.use(bodyParser.urlencoded({ extended: true }));
 // Use the cookie parser middleware
 router.use(cookieParser());
 // HW: read about extended: true

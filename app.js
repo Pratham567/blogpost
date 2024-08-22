@@ -11,7 +11,7 @@ const USER_NAME = 'mituser';
 const PASSWORD = 'mitpassword';
 const DB_NAME = 'merndb'; // TODO: Change this to your database name
 const DB_URI = `mongodb+srv://${USER_NAME}:${PASSWORD}@merncluster.xtjdu.mongodb.net/${DB_NAME}?retryWrites=true&w=majority&appName=mernMongoose`;
-const PORT = 3040;
+const PORT = 3000;
 
 // express app
 const app = express();
