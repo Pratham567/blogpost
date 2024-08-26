@@ -80,6 +80,58 @@ app.use((req, res) => {
 });
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Problem Statement: We need to display only the blogs created by the logged in user.
+// 1. Map the user to the blog post Document.
+// 1.1 We already have author field in the blogpost schema. Can we use that?
+// 1.2 What else can we use ? email, name, id ?
+// Once we have the key final, we need to update the schema
+// 2. Update the Schema to have a reference to the User Schema
+// 2.1 Do we need to update the Model?
+// 3. Next , we should update the blog with the key before saving it to the database
+// 3.1 In order to update the blog with the key (ID), first we need to get info about the logged in user
+// 3.2 Can we use res.locals.user to get the user info?
+// Does it have the user ID ? -> NO
+// Can we add the userID to the res.locals.user object? Where does this value come from?
+// token ? cookies?
+// We need to update the token generation logic to include the user ID
+// 4. Update the token generation logic to include the user ID
+// 4.1 We need to update the signup route to include the user ID in the token
+// 4.2 We need to update the login route to include the user ID in the token
+// 5. Once, we have added the ID, we need to read ID and save in the res.locals.user object
+// 6. Before saving the blog, we need to update the blog object with the user ID
+// 7. Now, in order to display the blogs, we need to filter the blogs based on the user ID
+// 7.1 Where do we get the user ID? 
+
+
+
+
+
+
+
+
+
+
+
+
+
 // 1. Let's submit a form
 // Q: What is the default method of the form?
 // -> GET
