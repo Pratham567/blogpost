@@ -35,7 +35,7 @@ router.post('/signup', (req, res) => {
             // // send it back as cookie, and redirect to all blogs page /blogs
             console.log('User created successfully');
             // Create a token and send it back as a cookie
-            const token = getToken(user.email, user.name);
+            const token = getToken(user.email, user.name, user._id);
             res.cookie('authtoken', token, { httpOnly: true, maxAge: 7 * 24 * 60 * 60 * 1000 });
             res.redirect('/blogs');
         })
@@ -46,9 +46,9 @@ router.post('/signup', (req, res) => {
         });
 });
 
-function getToken(email, name) {
+function getToken(email, name, id) {
     const secret = "veryComplexSecret";
-    const token = jwt.sign({ email, name }, secret, { expiresIn: '7d' });
+    const token = jwt.sign({ email, name, id }, secret, { expiresIn: '7d' });
     return token;
 }
 
@@ -75,7 +75,7 @@ router.post('/login', (req, res) => {
                 // // send it back as cookie, and redirect to all blogs page /blogs
                 console.log('User logged in successfully');
                 // Create a token and send it back as a cookie
-                const token = getToken(user.email, user.name);
+                const token = getToken(user.email, user.name, user._id);
                 res.cookie('authtoken', token, { httpOnly: true, maxAge: 7 * 24 * 60 * 60 * 1000 });
                 res.redirect('/blogs');
             }

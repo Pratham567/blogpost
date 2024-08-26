@@ -2,6 +2,31 @@
 const bcrypt = require('bcrypt');
 
 // 1. Create a hashPassword function that takes a password and returns a hashed password
+async function hashPassword(plaintext) {
+    const salt = await bcrypt.genSalt(11);
+    // console.log("salt: ", salt);
+    return bcrypt.hash(plaintext, salt);
+    // console.log("hashedPassword: ", hashedPassword);
+    // return hashedPassword;
+}
+hashPassword('password123')
+    .then((hashedPassword) => { 
+        console.log("hashedPassword", hashedPassword);
+        console.log(typeof hashedPassword);
+    })
+    .catch((err) => {
+        console.log("Error: ", err);
+    });
+
+const hashedPwdFromDb = "$2b$11$OzLxb.Ai9qxCHJfvp18zs.DPJEcZ6ChSF5X5hzlo5bVSsu8RnD0Eu";
+
+async function comparePassword(plainPasswordFromLogin, hashedPwdFromDb) {
+    const isMatch = await bcrypt.compare(plainPasswordFromLogin, hashedPwdFromDb);
+    console.log("isMatch: ", isMatch);
+    // return isMatch;
+}
+comparePassword('password123', hashedPwdFromDb);
+
 // 1.1 Use bcrypt.genSalt(10) to generate a salt // returns a promise
 // 1.2 Use bcrypt.hash(password, salt) to generate a hashed password // returns a promise
 // 1.3 Return the hashed password

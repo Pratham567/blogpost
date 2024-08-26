@@ -7,9 +7,16 @@ const jwt = require('jsonwebtoken');
 const cookieParser = require('cookie-parser');
 
 // CONSTANTS
-const USER_NAME = 'mitUser';
-const PASSWORD = 'mitPassword';
-const DB_NAME = 'merndb'; // TODO: Change this to your database name
+// install module: npm install dotenv
+// npm install dotenv
+// const dotenv = require('dotenv');
+// dotenv.config();
+
+require('dotenv').config();
+
+const USER_NAME = process.env.DB_USER_NAME;
+const PASSWORD = process.env.DB_PASSWORD;
+const DB_NAME = process.env.DB_NAME;
 const DB_URI = `mongodb+srv://${USER_NAME}:${PASSWORD}@merncluster.xtjdu.mongodb.net/${DB_NAME}?retryWrites=true&w=majority&appName=mernMongoose`;
 const PORT = 3000;
 

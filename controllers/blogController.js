@@ -7,7 +7,8 @@ const BlogPost = require('../models/blogpost');
 
 // blog_index_get
 const blog_index_get = (req, res) => {
-    BlogPost.find().sort({ createdAt: -1 })
+    const userIdFromToken = res.locals.user.id;
+    BlogPost.find({author: userIdFromToken}).sort({ createdAt: -1 })
         .then((result) => {
             res.render('blogs/blogs', { title: 'All blogs', blogs: result });
         })
@@ -21,7 +22,10 @@ const blog_index_get = (req, res) => {
 // blog_id_get
 const blog_id_get = (req, res) => {
     BlogPost.findById(req.params.id)
+        .populate('author')
         .then((blog) => {
+            console.log("Getting blog by ID");
+            console.log(blog);
             res.render('blogs/single-blog', { title: blog.title, blog });
         })
         .catch((err) => {
@@ -32,8 +36,16 @@ const blog_id_get = (req, res) => {
 
 // blog_create_post
 const blog_create_post = (req, res) => {
-    const blog = req.body;
+    // get the user reference from logged in user, via res.locals.user
+    const userIdFromToken = res.locals.user.id;
     // Create a new blog post using the BlogPost static method
+    const blog = {
+        title: req.body.title,
+        summary: req.body.summary,
+        content: req.body.content,
+        author: userIdFromToken
+    }
+    
     BlogPost.create(blog)
         .then((result) => {
             console.log(`New blog added: ${result.title}`);
