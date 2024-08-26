@@ -5,11 +5,12 @@ const blogpostRoutes = require('./routes/blogRoutes');
 const authRoutes = require('./routes/auth/authRoutes');
 const jwt = require('jsonwebtoken');
 const cookieParser = require('cookie-parser');
+require('dotenv').config();
 
 // CONSTANTS
-const USER_NAME = 'mitUser';
-const PASSWORD = 'mitPassword';
-const DB_NAME = 'merndb'; // TODO: Change this to your database name
+const USER_NAME = process.env.USER_NAME;
+const PASSWORD = process.env.PASSWORD;
+const DB_NAME = process.env.DB_NAME;
 const DB_URI = `mongodb+srv://${USER_NAME}:${PASSWORD}@merncluster.xtjdu.mongodb.net/${DB_NAME}?retryWrites=true&w=majority&appName=mernMongoose`;
 const PORT = 3000;
 
@@ -22,7 +23,7 @@ app.use(express.json());
 
 mongoose.connect(DB_URI)
     .then((result) => {
-        console.log('Connected to database');
+        console.log(`Connected to database ${DB_NAME}`);
         app.listen(PORT, () => {
             console.log(`Server is running on port ${PORT}`);
         });
@@ -35,11 +36,6 @@ mongoose.connect(DB_URI)
 
 // register view engine
 app.set('view engine', 'ejs');
-
-// app.use((req, res, next) => {
-//     res.locals.path = req.path;
-//     next();
-// });
 
 // middleware -> checkUser
 app.use(cookieParser());
